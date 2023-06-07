@@ -1,13 +1,15 @@
 import { createBrowserRouter } from "react-router-dom";
+import RoomView from "./views/room";
+import HomeView from "./views/home";
 
 const router = createBrowserRouter([
   {
     path: "",
-    element: <div>Home</div>,
+    element: <HomeView />,
   },
   {
-    path: "login",
-    element: <div>Login</div>,
+    path: "room",
+    element: <RoomView />,
   },
 ]);
 
