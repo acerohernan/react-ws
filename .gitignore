@@ -1,0 +1,10 @@
+# General
+node_modules
+
+# Build
+dist/
+
+# Environment
+.env
+.env.*
+!.env.template

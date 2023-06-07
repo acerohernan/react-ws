@@ -1,0 +1,16 @@
+{
+  "name": "whiteboard-monorepo",
+  "version": "1.0.0",
+  "description": "This is a whiteboard real time project made by acerohernan",
+  "private": "true",
+  "scripts": {
+    "frontend": "pnpm --filter=frontend",
+    "server": "pnpm --filter=server"
+  },
+  "keywords": [],
+  "author": {
+    "email": "contact.acero.hernan@gmail.com",
+    "name": "acerohernan"
+  },
+  "license": "MIT"
+}
