@@ -6,6 +6,12 @@ import API from "../../api";
 import { nanoid } from "nanoid";
 import { useNavigate } from "react-router-dom";
 import toast from "../../utils/toast";
+import { io } from "socket.io-client";
+
+const server = import.meta.env.VITE_API_URL;
+const socket = io(server, {
+  transports: ["websocket"],
+});
 
 const RoomContextProvider: React.FC<React.PropsWithChildren> = ({
   children,
@@ -16,17 +22,17 @@ const RoomContextProvider: React.FC<React.PropsWithChildren> = ({
   const navigate = useNavigate();
 
   async function createRoom(form: CreateRoomFormValues) {
-    /* Joining the room in the server */
-    await API.room.createRoom(form);
-
-    /* Saving the user information */
+    /* Creating the user information */
     const user: User = {
       id: nanoid(),
       roomId: form.code,
-      host: false,
-      presenter: false,
+      host: true,
+      presenter: true,
       username: form.name,
     };
+
+    /* Emit the event  with the socket */
+    socket.emit("user-joined", user);
 
     /* Saving the user in state and in local storage*/
     setUser(user);
@@ -39,9 +45,6 @@ const RoomContextProvider: React.FC<React.PropsWithChildren> = ({
     toast.success("Succesful joined!");
   }
   async function joinRoom(form: JoinRoomFormValues) {
-    /* Joining the room in the server */
-    await API.room.joinRoom(form);
-
     /* Saving the user information */
     const user: User = {
       id: nanoid(),
@@ -50,6 +53,9 @@ const RoomContextProvider: React.FC<React.PropsWithChildren> = ({
       presenter: false,
       username: form.name,
     };
+
+    /* Emit the event  with the socket */
+    socket.emit("user-joined", user);
 
     /* Saving the user in state and in local storage*/
     setUser(user);
@@ -77,6 +83,7 @@ const RoomContextProvider: React.FC<React.PropsWithChildren> = ({
     () => ({
       roomId,
       user,
+      socket,
       actions: {
         createRoom,
         joinRoom,

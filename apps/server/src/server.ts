@@ -18,11 +18,12 @@ io.on("connection", (socket) => {
   console.log("Connection entablished with a client", socket.id);
 
   socket.on("user-joined", (data) => {
-    const { roomId, userId, userName, host, presenter } = data;
+    const { roomId, userId, username, host, presenter } = data;
     userRoom = roomId;
-    const user = userJoin(socket.id, userName, roomId, host, presenter);
+    const user = userJoin(socket.id, username, roomId, host, presenter);
     const roomUsers = getUsers(user.room);
     socket.join(user.room);
+    console.log("Joining to the room", user.room);
     socket.emit("message", {
       message: "Welcome to ChatRoom",
     });
@@ -31,6 +32,7 @@ io.on("connection", (socket) => {
     });
 
     io.to(user.room).emit("users", roomUsers);
+    console.log("Total users in the room", roomUsers);
     io.to(user.room).emit("canvasImage", imageUrl);
   });
 
@@ -40,6 +42,8 @@ io.on("connection", (socket) => {
   });
 
   socket.on("disconnect", () => {
+    console.log("Leaving...");
+
     const userLeaves = userLeave(socket.id);
     const roomUsers = getUsers(userRoom);
 

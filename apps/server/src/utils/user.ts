@@ -2,7 +2,6 @@ import { User } from "../types";
 
 const users: Array<User> = [];
 
-// Join user to chat
 export const userJoin = (id, username, room, host, presenter) => {
   const user: User = { id, username, room, host, presenter };
 

@@ -1,3 +1,4 @@
+import { Socket } from "socket.io-client";
 import { CreateRoomFormValues, JoinRoomFormValues } from "../../api/types";
 
 export type User = {
@@ -11,6 +12,7 @@ export type User = {
 export type RoomContextValue = {
   user: User | null;
   roomId: string;
+  socket: Socket;
   actions: RoomContextActions;
 };
 
