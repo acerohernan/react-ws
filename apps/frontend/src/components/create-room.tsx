@@ -1,6 +1,7 @@
 import { useForm } from "react-hook-form";
 import { nanoid } from "nanoid";
 import { CreateRoomFormValues } from "../api/types";
+import { useRoomContext } from "../context/room/hooks";
 
 const CreateRoomForm = () => {
   const {
@@ -10,8 +11,12 @@ const CreateRoomForm = () => {
     handleSubmit,
   } = useForm<CreateRoomFormValues>();
 
+  const {
+    actions: { createRoom },
+  } = useRoomContext();
+
   const onSubmit = (data: CreateRoomFormValues) => {
-    console.log(data);
+    createRoom(data);
   };
 
   return (

@@ -16,13 +16,33 @@ const RoomContextProvider: React.FC<React.PropsWithChildren> = ({
   const navigate = useNavigate();
 
   async function createRoom(form: CreateRoomFormValues) {
+    /* Joining the room in the server */
     await API.room.createRoom(form);
+
+    /* Saving the user information */
+    const user: User = {
+      id: nanoid(),
+      roomId: form.code,
+      host: false,
+      presenter: false,
+      username: form.name,
+    };
+
+    /* Saving the user in state and in local storage*/
+    setUser(user);
+    localStorage.setItem("user", JSON.stringify(user));
+
+    /* Redirect the user to the room page */
+    navigate("/room");
+
+    /* Give feedback to the user */
+    toast.success("Succesful joined!");
   }
   async function joinRoom(form: JoinRoomFormValues) {
-    console.log("executing");
-    /* Create the room in the server */
+    /* Joining the room in the server */
     await API.room.joinRoom(form);
 
+    /* Saving the user information */
     const user: User = {
       id: nanoid(),
       roomId: form.roomId,
@@ -43,8 +63,13 @@ const RoomContextProvider: React.FC<React.PropsWithChildren> = ({
   }
 
   function leftRoom() {
+    /* Deleting the user information */
     localStorage.removeItem("user");
+
+    /* Redirect the user to the home page */
     navigate("/");
+
+    /* Give feedback */
     toast.success("Room deleted!");
   }
 
